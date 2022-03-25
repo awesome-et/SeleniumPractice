@@ -9,7 +9,6 @@ import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
-
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.List;
@@ -74,10 +73,25 @@ public class DashboardScreen extends Setup {
     @FindBy(xpath = "//span[@id='range']")
     public WebElement horizontalSliderValue;
 
-    void clickBasicAuth() {
+    @FindBy(linkText = "JavaScript Alerts")
+    public WebElement jsAlertsLink;
+
+    @FindBy(xpath = "//button[@onclick='jsAlert()']")
+    public WebElement jsAlerts;
+
+    @FindBy(xpath = "//button[@onclick='jsConfirm()']")
+    public WebElement jsConfirm;
+
+    @FindBy(xpath = "//button[@onclick='jsPrompt()']")
+    public WebElement jsPrompt;
+
+    @FindBy(id = "result")
+    public WebElement alertResult;
+
+    public void clickBasicAuth() {
         basicAuth.click();
     }
-    void addRemoveElements()  {
+    public void addRemoveElements()  {
         addRemoveElements.click();
        boolean ab = addRemoveElementsPageTitle.getText().equals("Add/Remove Elements");
        if(!ab){
@@ -110,7 +124,7 @@ public class DashboardScreen extends Setup {
         }
     }
 
-    void handleCheckBoxes() {
+    public void handleCheckBoxes() {
         checkBoxLink.click();
         for(int i=0;i<checkBoxes.size();i++){
             boolean checkBoxStatus = checkBoxes.get(i).isSelected();
@@ -121,38 +135,45 @@ public class DashboardScreen extends Setup {
         }
     }
 
-    void handleContextClick() throws InterruptedException {
+    public void handleContextClick() throws InterruptedException, AWTException {
         contextMenu.click();
         Actions actions = new Actions(driver);
         actions.contextClick(contextClickElement).build().perform();
         Alert alert = driver.switchTo().alert();
         alert.accept();
+        Thread.sleep(2000);
+        Robot robot = new Robot();
+        robot.keyPress(KeyEvent.VK_DOWN);
+        robot.keyRelease(KeyEvent.VK_DOWN);
+        robot.keyPress(KeyEvent.VK_ENTER);
+        robot.keyRelease(KeyEvent.VK_ENTER);
+//        actions.contextClick().sendKeys(Keys.ARROW_RIGHT).sendKeys(Keys.ARROW_DOWN).sendKeys(Keys.RETURN).build().perform();
     }
 
-    void dragAndDrop() throws InterruptedException {
+    public void dragAndDrop() throws InterruptedException {
         dragAndDrop.click();
         Actions actions = new Actions(driver);
 //        actions.clickAndHold(dragA).moveToElement(dragB).release(dragA).build().perform();
-        actions.dragAndDrop(dragA,dragB).build().perform();
+//        actions.dragAndDrop(dragA,dragB).build().perform();
     }
 
-    void dropDown() throws InterruptedException {
+    public void dropDown() throws InterruptedException {
         dropDownLink.click();
         Select select = new Select(dropDown);
         select.selectByIndex(1);
     }
 
-    void entryAd() throws InterruptedException {
+    public void entryAd() throws InterruptedException {
         entryAd.click();
-        Thread.sleep(5000);
+        Thread.sleep(1000);
         adClose.click();
     }
 
-    void horizontalSliderLinkClick() throws InterruptedException {
+    public void horizontalSliderLinkClick() throws InterruptedException {
         horizontalSliderLink.click();
     }
 
-    void horizontalSlider(double val) throws InterruptedException, AWTException {
+    public void horizontalSlider(double val) throws InterruptedException, AWTException {
         horizontalSlider.click();
         if(Double.parseDouble(horizontalSliderValue.getText())>val){
             while(Double.parseDouble(horizontalSliderValue.getText())!=val && Double.parseDouble(horizontalSliderValue.getText())>val) {
@@ -165,6 +186,37 @@ public class DashboardScreen extends Setup {
                 horizontalSlider.sendKeys(Keys.RIGHT);
             }
         }
-
     }
-}
+
+    public void handleJSAlerts() throws InterruptedException {
+        jsAlertsLink.click();
+        jsAlerts.click();
+        driver.switchTo().alert().accept();
+        boolean result = alertResult.getText().equals("You successfully clicked an alert");
+        if (!result){
+            org.testng.Assert.fail("Result text is not displayed correctly. It should be " + alertResult.getText());
+        }
+        jsConfirm.click();
+        driver.switchTo().alert().dismiss();
+        result = alertResult.getText().equals("You clicked: Cancel");
+        if (!result){
+            org.testng.Assert.fail("Result text is not displayed correctly. It should be " + alertResult.getText());
+        }
+        jsConfirm.click();
+        driver.switchTo().alert().accept();
+        result = alertResult.getText().equals("You clicked: Ok");
+        if (!result){
+            org.testng.Assert.fail("Result text is not displayed correctly. It should be " + alertResult.getText());
+        }
+        jsPrompt.click();
+        String alertEnterText = "Hello from the other side";
+        Alert alert= driver.switchTo().alert();
+        Thread.sleep(1000);
+        alert.sendKeys(alertEnterText);
+        alert.accept();
+        result = alertResult.getText().equals("You entered: " + alertEnterText );
+        if (!result){
+            org.testng.Assert.fail("Result text is not displayed correctly. It should be " + alertResult.getText());
+        }
+
+    }}

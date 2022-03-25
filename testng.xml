@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Suite">
+    <listeners>
+        <listener class-name="TestListeners.Listeners"/>
+    </listeners>
+    <test name="Automation suite">
+
+        <parameter name="groups" value="AllTests"/>
+        <groups>
+            <run>
+                <include name="AllTests"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="Test.Runner"/>
+        </packages>
+                <classes>
+                    <class name="Test.Runner"></class>
+                </classes>
+    </test>
+</suite>
+        <!-- Suite -->
