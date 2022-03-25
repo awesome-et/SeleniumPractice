@@ -3,10 +3,6 @@ package Test;
 import static Interface.ClassObjects.*;
 
 import Setup.Setup;
-import org.openqa.selenium.Alert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterGroups;
-import org.testng.annotations.AfterSuite;
 import org.testng.annotations.Test;
 import java.util.concurrent.ThreadLocalRandom;
 
