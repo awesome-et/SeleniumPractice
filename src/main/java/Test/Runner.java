@@ -3,7 +3,10 @@ package Test;
 import static Interface.ClassObjects.*;
 
 import Setup.Setup;
+import org.openqa.selenium.Alert;
 import org.testng.annotations.Test;
+
+import java.awt.event.KeyEvent;
 import java.util.concurrent.ThreadLocalRandom;
 
 import java.awt.*;
@@ -13,12 +16,8 @@ import java.awt.*;
 public class Runner extends Setup {
 
     @Test(groups = "basicAuth")
-    public void performBasicAuth() throws InterruptedException {
+    public void performBasicAuth() throws InterruptedException, AWTException {
         dashboardScreen.clickBasicAuth();
-//        Thread.sleep(3000);
-//        Alert alert = driver.switchTo().alert();
-//        alert.sendKeys("admin");
-//        alert.sendKeys("admin");
     }
 
     @Test(groups = "addRemoveElements")
@@ -62,6 +61,11 @@ public class Runner extends Setup {
     @Test(groups = "jsAlerts")
     public void handleJSAlerts() throws InterruptedException {
         dashboardScreen.handleJSAlerts();
+    }
+
+    @Test(groups = "multipleWindows")
+    public void multipleWindows() throws InterruptedException {
+        dashboardScreen.multipleWindows();
     }
 
 }

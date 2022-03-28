@@ -9,13 +9,18 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public class DashboardScreen extends Setup {
     int verifyAddElement=0,verifyDeleteElement;
 
     @FindBy(linkText = "Basic Auth")
     public WebElement basicAuth;
+
+    @FindBy(id = "content")
+    public WebElement basicAuthResult;
 
     @FindBy(linkText = "Add/Remove Elements")
     public WebElement addRemoveElements;
@@ -86,8 +91,49 @@ public class DashboardScreen extends Setup {
     @FindBy(id = "result")
     public WebElement alertResult;
 
-    public void clickBasicAuth() {
+    @FindBy(linkText = "Multiple Windows")
+    public WebElement multipleWindows;
+
+    @FindBy(linkText = "Click Here")
+    public WebElement clickHere;
+
+    @FindBy(className = "example")
+    public WebElement childWindow;
+
+    @FindBy(className = "example")
+    public WebElement parentWindow;
+
+    public void clickBasicAuth() throws AWTException {
+        Robot robot = new Robot();
         basicAuth.click();
+        robot.keyPress(KeyEvent.VK_A);
+        robot.keyRelease(KeyEvent.VK_A);
+        robot.keyPress(KeyEvent.VK_D);
+        robot.keyRelease(KeyEvent.VK_D);
+        robot.keyPress(KeyEvent.VK_M);
+        robot.keyRelease(KeyEvent.VK_M);
+        robot.keyPress(KeyEvent.VK_I);
+        robot.keyRelease(KeyEvent.VK_I);
+        robot.keyPress(KeyEvent.VK_N);
+        robot.keyRelease(KeyEvent.VK_N);
+        robot.keyPress(KeyEvent.VK_TAB);
+        robot.keyRelease(KeyEvent.VK_TAB);
+        robot.keyPress(KeyEvent.VK_A);
+        robot.keyRelease(KeyEvent.VK_A);
+        robot.keyPress(KeyEvent.VK_D);
+        robot.keyRelease(KeyEvent.VK_D);
+        robot.keyPress(KeyEvent.VK_M);
+        robot.keyRelease(KeyEvent.VK_M);
+        robot.keyPress(KeyEvent.VK_I);
+        robot.keyRelease(KeyEvent.VK_I);
+        robot.keyPress(KeyEvent.VK_N);
+        robot.keyRelease(KeyEvent.VK_N);
+        robot.keyPress(KeyEvent.VK_ENTER);
+        robot.keyRelease(KeyEvent.VK_ENTER);
+        boolean content = basicAuthResult.getText().contains("Congratulations! You must have the proper credentials.");
+        if(!content){
+            org.testng.Assert.fail("Login failure" + basicAuthResult.getText());
+        }
     }
     public void addRemoveElements()  {
         addRemoveElements.click();
@@ -216,5 +262,21 @@ public class DashboardScreen extends Setup {
         if (!result){
             org.testng.Assert.fail("Result text is not displayed correctly. It should be " + alertResult.getText());
         }
+    }
 
-    }}
+    public void multipleWindows() {
+        multipleWindows.click();
+        clickHere.click();
+        if(!childWindow.isDisplayed()){
+            org.testng.Assert.fail("Not navigated correctly to the child window");
+        }
+       String parentWindow =  driver.getWindowHandle();
+        Set<String> string = driver.getWindowHandles();
+        Iterator<String> iterator = string.iterator();
+        driver.switchTo().window(parentWindow);
+        if(!this.parentWindow.isDisplayed()){
+            org.testng.Assert.fail("Not navigated correctly to the parent window");
+        }
+    }
+
+}

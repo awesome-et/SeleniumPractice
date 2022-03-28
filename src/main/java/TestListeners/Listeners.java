@@ -7,7 +7,6 @@ import org.testng.ITestResult;
 
     public class Listeners extends Setup implements ITestListener
     {
-        public static WebDriver driver;
 
         @Override
         public void onTestStart(ITestResult result) {
