@@ -15,17 +15,17 @@ import java.awt.*;
 public class Runner extends Setup {
 
     @Test(groups = "basicAuth")
-    public void performBasicAuth() throws InterruptedException, AWTException {
+    public void performBasicAuth() throws AWTException {
         dashboardScreen.clickBasicAuth();
     }
 
     @Test(groups = "addRemoveElements")
-    public void addRemoveElements() throws InterruptedException {
+    public void addRemoveElements() {
         dashboardScreen.addRemoveElements();
     }
 
     @Test(groups = "checkBoxes")
-    public void handleCheckBoxes() throws InterruptedException {
+    public void handleCheckBoxes() {
         dashboardScreen.handleCheckBoxes();
     }
 
