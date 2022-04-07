@@ -8,9 +8,15 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 import java.awt.*;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 
 public class DashboardScreen extends Setup {
@@ -94,7 +100,7 @@ public class DashboardScreen extends Setup {
     @FindBy(linkText = "Multiple Windows")
     public WebElement multipleWindows;
 
-    @FindBy(linkText = "Click Here")
+    @FindBy(partialLinkText = "Click Here")
     public WebElement clickHere;
 
     @FindBy(className = "example")
@@ -102,6 +108,27 @@ public class DashboardScreen extends Setup {
 
     @FindBy(className = "example")
     public WebElement parentWindow;
+
+    @FindBy(linkText = "File Upload")
+    public WebElement fileUpload;
+
+    @FindBy(id = "file-upload")
+    public WebElement chooseFile;
+
+    @FindBy(id = "file-submit")
+    public WebElement submitUploadedFile;
+
+    @FindBy(xpath = "//div[text()='Upload a file']")
+    public WebElement fileUploadGrammarly;
+
+    @FindBy(xpath = "//input[@type='file']")
+    public WebElement file;
+
+    @FindBy(linkText = "Forgot Password")
+    public WebElement forgotPassword;
+
+    @FindBy(id = "email")
+    public WebElement email;
 
     public void clickBasicAuth() throws AWTException {
         Robot robot = new Robot();
@@ -277,6 +304,54 @@ public class DashboardScreen extends Setup {
         if(!this.parentWindow.isDisplayed()){
             org.testng.Assert.fail("Not navigated correctly to the parent window");
         }
+    }
+
+    public void fileUpload( ) throws AWTException {
+
+//      file.sendKeys("/Users/meshah/Desktop/test.txt");
+        fileUploadGrammarly.click();
+        Robot robot = new Robot();
+        File file = new File("/Users/meshah/Desktop/test.txt");
+        StringSelection stringSelection = new StringSelection(file.getAbsolutePath());
+        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection,null);
+
+        robot.keyPress(KeyEvent.VK_META);
+        robot.keyPress(KeyEvent.VK_TAB);
+        robot.keyRelease(KeyEvent.VK_META);
+        robot.keyRelease(KeyEvent.VK_TAB);
+        robot.delay(500);
+
+//Open Goto window
+
+        robot.keyPress(KeyEvent.VK_META);
+        robot.keyPress(KeyEvent.VK_SHIFT);
+        robot.keyPress(KeyEvent.VK_G);
+        robot.keyRelease(KeyEvent.VK_META);
+        robot.keyRelease(KeyEvent.VK_SHIFT);
+        robot.keyRelease(KeyEvent.VK_G);
+
+//Paste the clipboard value
+
+        robot.keyPress(KeyEvent.VK_META);
+        robot.keyPress(KeyEvent.VK_V);
+        robot.keyRelease(KeyEvent.VK_META);
+        robot.keyRelease(KeyEvent.VK_V);
+
+//Press Enter key to close the Goto window and Upload window
+
+        robot.keyPress(KeyEvent.VK_ENTER);
+        robot.keyRelease(KeyEvent.VK_ENTER);
+        robot.delay(500);
+        robot.keyPress(KeyEvent.VK_ENTER);
+        robot.keyRelease(KeyEvent.VK_ENTER);
+    }
+
+    public void EnterTextFromFile() throws IOException {
+        forgotPassword.click();
+        Properties properties = new Properties();
+        FileInputStream input = new FileInputStream("/Users/meshah/Desktop/test.txt");
+        properties.load(input);
+        email.sendKeys(properties.getProperty("email"));
     }
 
 }

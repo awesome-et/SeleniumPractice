@@ -3,10 +3,9 @@ package Test;
 import static Interface.ClassObjects.*;
 
 import Setup.Setup;
-import org.openqa.selenium.Alert;
 import org.testng.annotations.Test;
 
-import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.concurrent.ThreadLocalRandom;
 
 import java.awt.*;
@@ -64,8 +63,17 @@ public class Runner extends Setup {
     }
 
     @Test(groups = "multipleWindows")
-    public void multipleWindows() throws InterruptedException {
+    public void multipleWindows() {
         dashboardScreen.multipleWindows();
     }
 
+    @Test(groups = "fileUpload")
+    public void fileUpload() throws AWTException {
+        dashboardScreen.fileUpload();
+    }
+
+    @Test(groups = "enterTextFromFile")
+    public void enterTextFromFile() throws IOException {
+        dashboardScreen.EnterTextFromFile();
+    }
 }
