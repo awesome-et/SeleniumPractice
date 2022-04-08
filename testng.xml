@@ -6,10 +6,10 @@
     </listeners>
     <test name="Automation suite">
 
-        <parameter name="groups" value="AllTests"/>
+        <parameter name="groups" value="enterTextFromFile"/>
         <groups>
             <run>
-                <include name="AllTests"/>
+                <include name="enterTextFromFile"/>
             </run>
         </groups>
         <packages>

@@ -29,8 +29,8 @@ public class Setup  {
 
     @AfterClass(alwaysRun = true)
     public void closure() {
-        driver.close();
-        driver.quit();
+//        driver.close();
+//        driver.quit();
     }
 
     public Setup() {

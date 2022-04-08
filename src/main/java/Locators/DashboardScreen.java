@@ -2,6 +2,7 @@ package Locators;
 
 import Setup.Setup;
 import org.openqa.selenium.Alert;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -347,6 +348,8 @@ public class DashboardScreen extends Setup {
     }
 
     public void EnterTextFromFile() throws IOException {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView();", forgotPassword);
         forgotPassword.click();
         Properties properties = new Properties();
         FileInputStream input = new FileInputStream("/Users/meshah/Desktop/test.txt");
